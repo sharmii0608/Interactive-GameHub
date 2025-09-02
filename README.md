@@ -4,7 +4,6 @@ Welcome to **Interactive-GameHub**!
 This project contains 3 exciting Python games with AI and interactive gameplay.  
 Each game is built using **Python** and **Pygame** (for graphics), with Chess also using **python-chess** for AI moves.
 
----
 
 ## 📂 Games Included
 
@@ -34,7 +33,7 @@ Each game is built using **Python** and **Pygame** (for graphics), with Chess al
      - `← ↑ ↓ →` : Move your snake  
    - Avoid walls and your own tail while trying to outsmart the AI.
 
-### Outcome
+Outcome
 ![Snake](https://github.com/sharmii0608/Interactive-GameHub/blob/64acd5de9e7f5879de7a6bedf79bceed36072bf4/Games/Screenshot%202025-09-02%20142736.png)
 
 
