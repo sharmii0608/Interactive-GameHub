@@ -14,7 +14,6 @@ class SpaceInvaders:
         self.canvas = tk.Canvas(root, width=WIDTH, height=HEIGHT, bg="black")
         self.canvas.pack()
 
-        # Player ship
         self.ship = self.canvas.create_rectangle(WIDTH//2 - 20, HEIGHT - 40,
                                                  WIDTH//2 + 20, HEIGHT - 20,
                                                  fill="cyan")
@@ -24,7 +23,6 @@ class SpaceInvaders:
         self.enemy_dir = 1
         self.game_over = False
 
-        # Bind controls
         root.bind("<Left>", self.move_left)
         root.bind("<Right>", self.move_right)
         root.bind("<space>", self.shoot)
@@ -62,14 +60,12 @@ class SpaceInvaders:
         if self.game_over:
             return
 
-        # Move bullets
         for b in self.bullets[:]:
             self.canvas.move(b, 0, BULLET_SPEED)
             if self.canvas.coords(b)[1] < 0:
                 self.canvas.delete(b)
                 self.bullets.remove(b)
 
-        # Move enemies
         shift = ENEMY_SPEED * self.enemy_dir
         drop = False
         for e in self.enemies:
@@ -82,7 +78,6 @@ class SpaceInvaders:
                 self.canvas.move(e, 0, ENEMY_DROP)
             self.enemy_dir *= -1
 
-        # Bullet-enemy collision
         for b in self.bullets[:]:
             bx1, by1, bx2, by2 = self.canvas.coords(b)
             for e in self.enemies[:]:
@@ -94,7 +89,6 @@ class SpaceInvaders:
                     self.enemies.remove(e)
                     break
 
-        # Enemy reaching ship
         sx1, sy1, sx2, sy2 = self.canvas.coords(self.ship)
         for e in self.enemies:
             ex1, ey1, ex2, ey2 = self.canvas.coords(e)
@@ -102,7 +96,6 @@ class SpaceInvaders:
                 self.end_game("Game Over! Invaders reached you!")
                 return
 
-        # Win
         if not self.enemies:
             self.end_game("You win!")
 
