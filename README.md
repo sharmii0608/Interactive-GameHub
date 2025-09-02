@@ -15,6 +15,7 @@ Each game is built using **Python** and **Pygame** (for graphics), with Chess al
    - Survive as long as possible by defeating alien waves.
 
 Outcome
+
 ![space](https://github.com/sharmii0608/Interactive-GameHub/blob/76eb021c2e83a980ed40a74f9e01cfe839764640/Games/Screenshot%202025-09-02%20141742.png)
 
 ---
@@ -25,6 +26,7 @@ Outcome
    - AI responds automatically.
        
 Outcome
+
 ![Chess](https://github.com/sharmii0608/Interactive-GameHub/blob/0362ffb38cc048ac4b16e9141abc8b11ccca8c48/Games/Screenshot%202025-09-02%20142438.png)
 
 ---
@@ -37,6 +39,7 @@ Outcome
    - Avoid walls and your own tail while trying to outsmart the AI.
 
 Outcome
+
 ![Snake](https://github.com/sharmii0608/Interactive-GameHub/blob/64acd5de9e7f5879de7a6bedf79bceed36072bf4/Games/Screenshot%202025-09-02%20142736.png)
 
 
