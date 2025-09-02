@@ -3,28 +3,25 @@ from tkinter import messagebox
 import chess
 import time
 
-# ---------- Display ----------
 LIGHT = "#EEEED2"
 DARK = "#769656"
 HILITE = "#BACA44"
-SIZE = 64             # square size
+SIZE = 64            
 BOARD_PIX = SIZE * 8
 FONT_FAMILY_TRY = ("Segoe UI Symbol", "Arial Unicode MS", "DejaVu Sans", "Arial")
-PIECE_FONT = None     # chosen at runtime
+PIECE_FONT = None     
 
 UNICODE_PIECES = {
     'P': '♙', 'N': '♘', 'B': '♗', 'R': '♖', 'Q': '♕', 'K': '♔',
     'p': '♟', 'n': '♞', 'b': '♝', 'r': '♜', 'q': '♛', 'k': '♚'
 }
 
-# ---------- Simple Evaluation ----------
 PIECE_VALUES = {
     chess.PAWN: 100, chess.KNIGHT: 320, chess.BISHOP: 330,
     chess.ROOK: 500, chess.QUEEN: 900, chess.KING: 20000
 }
 
 def evaluate(board: chess.Board) -> int:
-    """Material-only evaluation (White positive)."""
     if board.is_checkmate():
         return -10**9 if board.turn else 10**9
     if board.is_stalemate() or board.is_insufficient_material():
@@ -35,17 +32,13 @@ def evaluate(board: chess.Board) -> int:
         if p:
             score += PIECE_VALUES[p.piece_type] if p.color else -PIECE_VALUES[p.piece_type]
     return score
-
-# ---------- Alpha-Beta (returns score ONLY) ----------
 INF = 10**9
 
 def search(board: chess.Board, depth: int, alpha: int, beta: int) -> int:
-    """Negamax with alpha-beta pruning (returns ONLY score)."""
     if depth == 0 or board.is_game_over():
         return evaluate(board)
 
     best = -INF
-    # Simple move ordering: try captures first
     moves = list(board.legal_moves)
     moves.sort(key=lambda m: board.is_capture(m), reverse=True)
 
@@ -63,7 +56,6 @@ def search(board: chess.Board, depth: int, alpha: int, beta: int) -> int:
     return best
 
 def choose_best_move(board: chess.Board, depth: int) -> chess.Move | None:
-    """Pick the move that maximizes search score."""
     best_move = None
     best_score = -INF
 
@@ -79,14 +71,12 @@ def choose_best_move(board: chess.Board, depth: int) -> chess.Move | None:
             best_score = score
             best_move = mv
     return best_move
-
-# ---------- GUI ----------
+    
 class ChessGUI:
     def __init__(self, root):
         global PIECE_FONT
         self.root = root
         self.root.title("Chess vs AI (Unicode GUI)")
-        # Pick a font that has chess glyphs
         for fam in FONT_FAMILY_TRY:
             try:
                 PIECE_FONT = (fam, 36)
@@ -103,33 +93,30 @@ class ChessGUI:
         self.status.pack(pady=6)
 
         self.board = chess.Board()
-        self.sel_from = None          # selected square (int) or None
-        self.sel_square_rc = None     # (row, col) for highlight
-        self.depth = 2                # AI depth
+        self.sel_from = None          
+        self.sel_square_rc = None    
+        self.depth = 2               
 
         self.draw_board()
         self.canvas.bind("<Button-1>", self.on_click)
 
     def draw_board(self):
         self.canvas.delete("all")
-        # squares
         for r in range(8):
             for c in range(8):
                 x1, y1 = c * SIZE, r * SIZE
                 x2, y2 = x1 + SIZE, y1 + SIZE
                 color = LIGHT if (r + c) % 2 == 0 else DARK
                 self.canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline=color)
-        # highlight selected
         if self.sel_square_rc:
             r, c = self.sel_square_rc
             x1, y1 = c * SIZE, r * SIZE
             x2, y2 = x1 + SIZE, y1 + SIZE
             self.canvas.create_rectangle(x1, y1, x2, y2, outline=HILITE, width=4)
 
-        # pieces
         for r in range(8):
             for c in range(8):
-                sq = chess.square(c, 7 - r)   # convert GUI row to chess square
+                sq = chess.square(c, 7 - r)  
                 p = self.board.piece_at(sq)
                 if p:
                     sym = UNICODE_PIECES[p.symbol()]
@@ -140,7 +127,6 @@ class ChessGUI:
                         font=PIECE_FONT
                     )
 
-        # rank/file labels for better understanding
         for c in range(8):
             file_char = chr(ord('a') + c)
             self.canvas.create_text(c * SIZE + 6, BOARD_PIX - 10, text=file_char, anchor="w", fill="#333")
@@ -155,27 +141,21 @@ class ChessGUI:
         sq = chess.square(col, 7 - row)
 
         if self.sel_from is None:
-            # select your own piece (side to move)
             piece = self.board.piece_at(sq)
             if piece and piece.color == self.board.turn and piece.color == chess.WHITE:
                 self.sel_from = sq
                 self.sel_square_rc = (row, col)
                 self.draw_board()
         else:
-            # attempt a move
             move = self._make_move(self.sel_from, sq)
             self.sel_from = None
             self.sel_square_rc = None
             self.draw_board()
-
             if move:
                 self.root.after(200, self.ai_turn)
 
     def _make_move(self, from_sq: int, to_sq: int) -> chess.Move | None:
-        """Handle promotions to queen automatically."""
         move = chess.Move(from_sq, to_sq)
-
-        # if a simple move isn't legal, try promotion (when pawn reaches last rank)
         if move not in self.board.legal_moves:
             piece = self.board.piece_at(from_sq)
             if piece and piece.piece_type == chess.PAWN:
@@ -200,7 +180,6 @@ class ChessGUI:
         start = time.time()
         mv = choose_best_move(self.board, self.depth)
         if mv is not None:
-            # auto-promote if needed
             if (self.board.piece_at(mv.from_square) and
                 self.board.piece_at(mv.from_square).piece_type == chess.PAWN):
                 to_rank = chess.square_rank(mv.to_square)
