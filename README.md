@@ -13,18 +13,21 @@ Each game is built using **Python** and **Pygame** (for graphics), with Chess al
      - `← →` : Move left/right  
      - `Spacebar` : Shoot aliens  
    - Survive as long as possible by defeating alien waves.
-     
-### Outcome
+
+Outcome
 ![space](https://github.com/sharmii0608/Interactive-GameHub/blob/76eb021c2e83a980ed40a74f9e01cfe839764640/Games/Screenshot%202025-09-02%20141742.png)
+
+---
 
 2. **♟ Chess AI**
    - Play against a simple AI that uses the minimax algorithm.
    - Click a piece → then click where you want to move.
    - AI responds automatically.
        
-### Outcome
+Outcome
 ![Chess](https://github.com/sharmii0608/Interactive-GameHub/blob/0362ffb38cc048ac4b16e9141abc8b11ccca8c48/Games/Screenshot%202025-09-02%20142438.png)
 
+---
 
 3. **🐍 Snake Battle (Player vs AI Snake)**
    - You control the green snake.  
